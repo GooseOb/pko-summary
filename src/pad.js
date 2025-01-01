@@ -5,6 +5,6 @@ export const right = (str, length) =>
 
 export const LENGTH = 16;
 
+export const column = (str) => left(str, LENGTH);
 export const month = (str) => right(str, LENGTH / 2);
 export const amount = (floatNum) => left(floatNum.toFixed(2), LENGTH);
-export const column = (floatNum) => left(floatNum, LENGTH);
