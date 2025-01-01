@@ -1,0 +1,11 @@
+{
+  "name": "pko-summary",
+  "type": "module",
+  "dependencies": {
+    "pdf2json": "^3.1.4"
+  },
+  "scripts": {
+    "prepare": "mkdir -p sources",
+    "start": "node index.js"
+  }
+}
