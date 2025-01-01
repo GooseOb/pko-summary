@@ -6,6 +6,6 @@
   },
   "scripts": {
     "prepare": "mkdir -p sources",
-    "start": "node index.js"
+    "start": "node src/index.js"
   }
 }
