@@ -1,14 +1,12 @@
-import { writeFile, readdir } from "fs/promises";
+import { writeFile } from "fs/promises";
 import { getArgs } from "./args.js";
-import { tokensFrom } from "./tokens.js";
+import { tokenizeFiles } from "./tokens.js";
 import { parseDate2Amount } from "./parser.js";
 import * as pad from "./pad.js";
 
 const { sourceDir, resultFilename } = getArgs(process.argv);
 
-const date2amount = parseDate2Amount(
-  await tokensFrom(sourceDir, await readdir(sourceDir)),
-);
+const date2amount = parseDate2Amount(await tokenizeFiles(sourceDir));
 
 process.stdout.write(`Parsed ${date2amount.length} entries\n`);
 

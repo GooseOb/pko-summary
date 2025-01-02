@@ -1,4 +1,5 @@
 import { join } from "path";
+import { readdir } from "fs/promises";
 import PDFParser from "pdf2json";
 
 const parsePdf = (pdfPath) =>
@@ -9,22 +10,25 @@ const parsePdf = (pdfPath) =>
     pdfParser.loadPDF(pdfPath);
   });
 
-export const tokensFrom = (sourceDir, files) =>
-  Promise.all(
-    files.map(async (file) => {
-      process.stdout.write(`[${file}] Tokenizing...\n`);
-      const result = [];
-      for (const { Texts } of (await parsePdf(join(sourceDir, file))).Pages) {
-        for (const line of Texts) {
-          const data = line?.R?.[0]?.T;
-          if (data) {
-            if (result.length !== 0 || data === "Opis%20operacji") {
-              result.push(decodeURIComponent(data));
-            }
+const asyncFlatMapFiles = (dir, cb) =>
+  readdir(dir)
+    .then((files) => Promise.all(files.map(cb)))
+    .then((arr) => arr.flat());
+
+export const tokenizeFiles = (sourceDir) =>
+  asyncFlatMapFiles(sourceDir, async (file) => {
+    process.stdout.write(`[${file}] Tokenizing...\n`);
+    const result = [];
+    for (const { Texts } of (await parsePdf(join(sourceDir, file))).Pages) {
+      for (const line of Texts) {
+        const data = line?.R?.[0]?.T;
+        if (data) {
+          if (result.length !== 0 || data === "Opis%20operacji") {
+            result.push(decodeURIComponent(data));
           }
         }
       }
-      process.stdout.write(`[${file}] Tokenized\n`);
-      return result;
-    }),
-  ).then((arr) => arr.flat());
+    }
+    process.stdout.write(`[${file}] Tokenized\n`);
+    return result;
+  });
