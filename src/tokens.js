@@ -15,9 +15,9 @@ const asyncFlatMapFiles = (dir, cb) =>
     .then((files) => Promise.all(files.map(cb)))
     .then((arr) => arr.flat());
 
-export const tokenizeFiles = (sourceDir) =>
+export const extractLinesFromFiles = (sourceDir) =>
   asyncFlatMapFiles(sourceDir, async (file) => {
-    process.stdout.write(`[${file}] Tokenizing...\n`);
+    process.stdout.write(`[${file}] Extracting lines...\n`);
     const result = [];
     for (const { Texts } of (await parsePdf(join(sourceDir, file))).Pages) {
       for (const line of Texts) {
@@ -29,6 +29,6 @@ export const tokenizeFiles = (sourceDir) =>
         }
       }
     }
-    process.stdout.write(`[${file}] Tokenized\n`);
+    process.stdout.write(`[${file}] Lines extracted\n`);
     return result;
   });
