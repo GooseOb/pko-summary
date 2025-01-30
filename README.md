@@ -23,10 +23,10 @@ bun start
 
 # Options
 
-| name                  | default     | description                         | value      |
-| --------------------- | ----------- | ----------------------------------- | ---------- |
-| `--dir`               | sources     | Directory of wyciąg pdf files       | string     |
-| `--result`            | summary.txt | Result file name                    | string     |
-| `--negative-expenses` |             | Format expenses as negative numbers | NONE       |
-| `--order`             | asc         | Sort order by date                  | asc / desc |
-| `--format`            | txt         | Format of result file               | txt / csv  |
+| name                  | default     | description                   | value      |
+| --------------------- | ----------- | ----------------------------- | ---------- |
+| `--dir`               | sources     | Directory of wyciąg pdf files | string     |
+| `--result`            | summary.txt | Result file name              | string     |
+| `--negative-expenses` |             | Expenses as negative numbers  | NONE       |
+| `--order`             | asc         | Sort order by date            | asc / desc |
+| `--format`            | txt         | Format of result file         | txt / csv  |
