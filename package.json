@@ -1,11 +1,12 @@
 {
-  "name": "pko-summary",
-  "type": "module",
-  "dependencies": {
-    "pdf2json": "^3.1.4"
-  },
-  "scripts": {
-    "prepare": "mkdir -p sources",
-    "start": "node src/index.js"
-  }
+	"name": "pko-summary",
+	"type": "module",
+	"dependencies": {
+		"pdf2json": "^3.1.4"
+	},
+	"scripts": {
+		"prepare": "mkdir -p sources",
+		"txt": "node src/index.js",
+		"csv": "node src/index.js -o summary.csv"
+	}
 }

@@ -4,7 +4,7 @@ import { extractLinesFromFiles } from "./tokens.js";
 import { parseDate2Amount } from "./parser.js";
 
 try {
-  var { sourceDir, resultFilename, format, order, negativeExpenses } = getArgs(
+  var { inputDir, outputFile, format, order, negateExpenses } = getArgs(
     process.argv,
   );
 } catch (e) {
@@ -12,7 +12,7 @@ try {
   process.exit(1);
 }
 
-const date2amount = parseDate2Amount(await extractLinesFromFiles(sourceDir));
+const date2amount = parseDate2Amount(await extractLinesFromFiles(inputDir));
 
 process.stdout.write(`Parsed ${date2amount.length} entries\n`);
 
@@ -32,7 +32,7 @@ const result = format(
       }, {}),
     ),
   ),
-  negativeExpenses,
+  negateExpenses,
 );
-await writeFile(resultFilename, result);
-process.stdout.write(`Created report in ${resultFilename}\n`);
+await writeFile(outputFile, result);
+process.stdout.write(`Created report in ${outputFile}\n`);

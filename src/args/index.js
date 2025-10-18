@@ -1,58 +1,76 @@
+import path from "path";
 import { formatters } from "../formats/index.js";
 import { orders } from "../orders/index.js";
 import { UnknownArgumentError } from "./errors.js";
 
 export const getArgs = (argv) => {
-  let sourceDir = "sources";
-  let resultFilename = "";
-  let ext = "txt";
-  let format = formatters[ext];
+  let inputDir = "sources";
+  let outputFile = "";
   let order = orders.asc;
-  let negativeExpenses = false;
+  let negateExpenses = false;
 
-  const args = {
-    "--negative-expenses": () => {
-      negativeExpenses = true;
-    },
-    "--order": (value) => {
-      value = value.toLowerCase();
-      order = orders[value];
-      if (!order) {
-        throw new UnknownArgumentError("order", value, Object.keys(orders));
-      }
-    },
-    "--format": (value) => {
-      ext = value.toLowerCase();
-      format = formatters[ext];
-      if (!format) {
-        throw new UnknownArgumentError(
-          "format",
-          value,
-          Object.keys(formatters),
-        );
-      }
-    },
-    "--dir": (value) => {
-      sourceDir = value;
-    },
-    "--result": (value) => {
-      resultFilename = value;
-    },
-  };
+  const lookup = Object.fromEntries(
+    [
+      [
+        ["--input", "-i"],
+        {
+          arg: true,
+          fn: (v) => {
+            inputDir = v;
+          },
+        },
+      ],
+      [
+        ["--output", "-o"],
+        {
+          arg: true,
+          fn: (v) => {
+            outputFile = v;
+          },
+        },
+      ],
+      [
+        ["--sort", "-s"],
+        {
+          arg: true,
+          fn: (v) => {
+            v = v.toLowerCase();
+            order = orders[v];
+            if (!order)
+              throw new UnknownArgumentError("sort", v, Object.keys(orders));
+          },
+        },
+      ],
+      [
+        ["--negate-expenses"],
+        {
+          arg: false,
+          fn: () => {
+            negateExpenses = true;
+          },
+        },
+      ],
+    ].flatMap(([keys, v]) => keys.map((k) => [k, v])),
+  );
 
   for (let i = 2; i < argv.length; i++) {
-    args[argv[i]]?.(argv[++i]);
+    const def = lookup[argv[i]];
+    if (!def) continue;
+
+    const value = def.arg ? argv[++i] : undefined;
+    def.fn(value);
   }
 
-  if (!resultFilename) {
-    resultFilename = `summary.${ext}`;
-  }
+  if (!outputFile) outputFile = "summary.txt";
+
+  const ext = path.extname(outputFile).slice(1);
+  const format = formatters[ext] || formatters.txt;
 
   return {
-    sourceDir,
-    resultFilename,
+    inputDir,
+    outputFile,
     format,
     order,
-    negativeExpenses,
+    negateExpenses,
   };
 };
