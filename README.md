@@ -23,10 +23,10 @@ bun [script]
 
 # Scripts
 
-| script | description                                 |
-| ------ | ------------------------------------------- |
-| `txt`  | Generate summary outputing to `summary.txt` |
-| `csv`  | Generate summary outputing to `summary.csv` |
+| script | description                       |
+| ------ | --------------------------------- |
+| `txt`  | Generate summary in `summary.txt` |
+| `csv`  | Generate summary in `summary.csv` |
 
 # Options
 
