@@ -16,10 +16,17 @@ bun install
 Run:
 
 ```sh
-npm start
+npm run [script]
 # or
-bun start
+bun [script]
 ```
+
+# Scripts
+
+| script | description                                 |
+| ------ | ------------------------------------------- |
+| `txt`  | Generate summary outputing to `summary.txt` |
+| `csv`  | Generate summary outputing to `summary.csv` |
 
 # Options
 
